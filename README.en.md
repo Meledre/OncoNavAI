@@ -6,7 +6,6 @@ This is a shortened public repository intended for architecture and product demo
 - `backend/` — server-side logic and API
 - `frontend/` — UI and client logic
 - `infra/` — docker compose and runtime config
-- `scripts/` — helper utilities
 
 ## Quick start (local)
 ```bash

@@ -1,13 +1,12 @@
 {
   "source_repo": "git@github.com:Mel777Mel/OncoAI.git",
-  "source_commit": "e68b3cca7d30ab64a92cd9b12844bd5591f4ff36",
-  "exported_at_utc": "2026-02-26T06:42:22Z",
+  "source_commit": "65659c30ae2f180c0b29cdd3fada9dbbfae0e0db",
+  "exported_at_utc": "2026-02-26T06:45:39Z",
   "whitelist": [
     "backend",
     "frontend",
     "infra",
     "scripts",
-    "onco",
     "Makefile",
     "LICENSE",
     "COPYRIGHT",
@@ -28,6 +27,12 @@
     ".idea/",
     ".venv/",
     ".worktrees/",
+    "backend/tests/",
+    "backend/vendor/",
+    "backend/app/security/",
+    "frontend/lib/security/",
+    "scripts/security_gate.py",
+    "scripts/session_incident_gate.py",
     "infra/offline/*.tar",
     "scripts/*.applescript"
   ]

@@ -30,7 +30,6 @@ WHITELIST_ITEMS=(
   "frontend"
   "infra"
   "scripts"
-  "onco"
   "Makefile"
   "LICENSE"
   "COPYRIGHT"
@@ -52,6 +51,12 @@ BLOCKLIST_ITEMS=(
   ".idea/"
   ".venv/"
   ".worktrees/"
+  "backend/tests/"
+  "backend/vendor/"
+  "backend/app/security/"
+  "frontend/lib/security/"
+  "scripts/security_gate.py"
+  "scripts/session_incident_gate.py"
   "infra/offline/*.tar"
   "scripts/*.applescript"
 )
@@ -219,15 +224,76 @@ sanitize_snapshot() {
     "$SRC_SNAPSHOT_DIR/.github" \
     "$SRC_SNAPSHOT_DIR/.idea" \
     "$SRC_SNAPSHOT_DIR/.venv" \
-    "$SRC_SNAPSHOT_DIR/.worktrees"
+    "$SRC_SNAPSHOT_DIR/.worktrees" \
+    "$SRC_SNAPSHOT_DIR/backend/tests" \
+    "$SRC_SNAPSHOT_DIR/backend/vendor" \
+    "$SRC_SNAPSHOT_DIR/backend/app/security" \
+    "$SRC_SNAPSHOT_DIR/frontend/lib/security"
 
   if [ -d "$SRC_SNAPSHOT_DIR/infra/offline" ]; then
     find "$SRC_SNAPSHOT_DIR/infra/offline" -maxdepth 1 -type f -name "*.tar" -delete
   fi
 
   if [ -d "$SRC_SNAPSHOT_DIR/scripts" ]; then
+    rm -f \
+      "$SRC_SNAPSHOT_DIR/scripts/security_gate.py" \
+      "$SRC_SNAPSHOT_DIR/scripts/session_incident_gate.py"
     find "$SRC_SNAPSHOT_DIR/scripts" -maxdepth 1 -type f -name "*.applescript" -delete
   fi
+}
+
+sanitize_public_readmes() {
+  cat > "$SRC_SNAPSHOT_DIR/README.md" <<'EOF'
+# OncoNavAI (Public Snapshot)
+
+Публичная укороченная версия репозитория для демонстрации архитектуры, интерфейсов и структуры проекта.
+
+## Состав
+- `backend/` — серверная логика и API
+- `frontend/` — интерфейс и клиентская логика
+- `infra/` — docker compose и окружение
+- `scripts/` — служебные утилиты
+
+## Быстрый старт (локально)
+```bash
+cp .env.example .env
+docker compose -f infra/docker-compose.yml up --build -d
+```
+
+## Ограничения публичной версии
+- часть внутренних и служебных компонентов удалена;
+- тестовые наборы и vendor-артефакты не публикуются;
+- репозиторий предназначен для ознакомления и презентации.
+
+## Лицензия
+См. `LICENSE` и `COPYRIGHT`.
+EOF
+
+  cat > "$SRC_SNAPSHOT_DIR/README.en.md" <<'EOF'
+# OncoNavAI (Public Snapshot)
+
+This is a shortened public repository intended for architecture and product demos.
+
+## Included
+- `backend/` — server-side logic and API
+- `frontend/` — UI and client logic
+- `infra/` — docker compose and runtime config
+- `scripts/` — helper utilities
+
+## Quick start (local)
+```bash
+cp .env.example .env
+docker compose -f infra/docker-compose.yml up --build -d
+```
+
+## Public snapshot scope
+- selected internal/service components are removed;
+- test suites and vendor artifacts are not published;
+- repository is intended for review and presentation.
+
+## License
+See `LICENSE` and `COPYRIGHT`.
+EOF
 }
 
 write_manifest() {
@@ -259,7 +325,7 @@ PY
 }
 
 run_security_gate() {
-  python3 "$SRC_SNAPSHOT_DIR/scripts/security_gate.py" \
+  python3 "$ROOT_DIR/scripts/security_gate.py" \
     --repo-root "$SRC_SNAPSHOT_DIR" \
     --sbom-out "$RUN_DIR/sbom_manifest.json" \
     --strict
@@ -430,6 +496,7 @@ main() {
   create_source_snapshot || die "$EXIT_RUNTIME" "failed to create source snapshot"
   apply_whitelist
   sanitize_snapshot
+  sanitize_public_readmes
   write_manifest
 
   run_security_gate || die "$EXIT_SECURITY" "security_gate.py reported findings"

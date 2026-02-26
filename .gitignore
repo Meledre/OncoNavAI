@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Node
+node_modules/
+.next/
+frontend/vendor/npm-cache/
+frontend/tsconfig.tsbuildinfo
+
+# Runtime data
+data/docs/
+data/reports/
+data/oncoai.sqlite3
+data/demo_*/
+data/demo_local_smoke*/
+data/demo_api_smoke*/
+reports/metrics/*.json
+reports/metrics/pdf_pack_v8_smooth_*/
+reports/cli/
+reports/qa/
+
+# IDE
+.idea/
+.DS_Store
+
+# Local archives / manifests
+oncoai_sanitized_*.zip
+oncoai_sanitized_*.manifest.txt
+
+# Worktrees
+.worktrees/
+worktrees/
+
+# Env
+.env

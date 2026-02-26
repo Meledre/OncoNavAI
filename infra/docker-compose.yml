@@ -1,0 +1,89 @@
+services:
+  backend:
+    image: oncoai/backend:local
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+      args:
+        PIP_INSTALL_MODE: ${PIP_INSTALL_MODE:-online}
+    env_file:
+      - ../.env
+    environment:
+      - ONCOAI_RELEASE_PROFILE=${ONCOAI_RELEASE_PROFILE:-compat}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - VECTOR_BACKEND=${VECTOR_BACKEND:-local}
+      - QDRANT_URL=${QDRANT_URL:-}
+      - QDRANT_COLLECTION=${QDRANT_COLLECTION:-}
+      - LLM_GENERATION_ENABLED=${LLM_GENERATION_ENABLED:-}
+      - LLM_PROBE_ENABLED=${LLM_PROBE_ENABLED:-}
+      - LLM_PRIMARY_URL=${LLM_PRIMARY_URL:-}
+      - LLM_PRIMARY_MODEL=${LLM_PRIMARY_MODEL:-}
+      - LLM_PRIMARY_API_KEY=${LLM_PRIMARY_API_KEY:-}
+      - LLM_FALLBACK_URL=${LLM_FALLBACK_URL:-}
+      - LLM_FALLBACK_MODEL=${LLM_FALLBACK_MODEL:-}
+      - LLM_FALLBACK_API_KEY=${LLM_FALLBACK_API_KEY:-}
+      - LLM_FALLBACK_TIMEOUT_SEC=${LLM_FALLBACK_TIMEOUT_SEC:-}
+      - LLM_FALLBACK_MAX_TOKENS=${LLM_FALLBACK_MAX_TOKENS:-}
+      - EMBEDDING_BACKEND=${EMBEDDING_BACKEND:-hash}
+      - EMBEDDING_URL=${EMBEDDING_URL:-}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-}
+      - EMBEDDING_API_KEY=${EMBEDDING_API_KEY:-}
+      - RERANKER_BACKEND=${RERANKER_BACKEND:-lexical}
+      - ONCOAI_DATA_DIR=${ONCOAI_DATA_DIR:-/app/data}
+      - ONCOAI_DB_PATH=${ONCOAI_DB_PATH:-/app/data/oncoai.sqlite3}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../data:/app/data
+      - ../backend/app:/app/backend/app
+      - ../docs/prompts:/app/docs/prompts:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    image: oncoai/frontend:local
+    build:
+      context: ..
+      dockerfile: frontend/Dockerfile
+      args:
+        NPM_INSTALL_MODE: ${NPM_INSTALL_MODE:-online}
+    env_file:
+      - ../.env
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - LOCAL_CORE_BASE_URL=http://backend:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ../frontend/app:/app/app
+      - ../frontend/components:/app/components
+      - ../frontend/lib:/app/lib
+      - ../frontend/proxy.ts:/app/proxy.ts
+      - ../frontend/next.config.mjs:/app/next.config.mjs
+      - ../frontend/tsconfig.json:/app/tsconfig.json
+
+  qdrant:
+    image: qdrant/qdrant:v1.13.0
+    ports:
+      - "6333:6333"
+    profiles: ["full"]
+
+  vllm:
+    image: vllm/vllm-openai:latest
+    command: ["--model", "Qwen/Qwen2.5-7B-Instruct", "--host", "0.0.0.0", "--port", "8001"]
+    ports:
+      - "8001:8001"
+    profiles: ["full"]
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    profiles: ["full"]
+
+volumes:
+  ollama_data:

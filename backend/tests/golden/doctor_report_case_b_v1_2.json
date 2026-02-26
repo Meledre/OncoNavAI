@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.2",
+  "report_id": "golden-case-b-v1-2",
+  "summary": "Недостаточно подтверждений для иммуннотерапии по умолчанию.",
+  "case_facts": {
+    "initial_stage": {
+      "tnm": "cT4N3M1",
+      "stage_group": "IV"
+    },
+    "metastases": [
+      {
+        "site": "брюшина",
+        "status": "present"
+      }
+    ],
+    "biomarkers": {
+      "pd_l1_cps_values": [
+        0
+      ],
+      "msi_status": "MSS"
+    },
+    "treatment_history": [
+      {
+        "name": "FOLFOX",
+        "status": "progression"
+      }
+    ],
+    "key_unknowns": []
+  },
+  "timeline": [
+    "Первая линия FOLFOX",
+    "Прогрессия"
+  ],
+  "consilium_md": "## Ключевые клинические факты\n- cT4N3M1\n- PD-L1 CPS 0\n- MSS\n\n## Примечание\nНе найдено в предоставленных рекомендациях.",
+  "plan": [],
+  "issues": [],
+  "sanity_checks": [],
+  "citations": [],
+  "generated_at": "2026-02-21T00:00:00Z"
+}

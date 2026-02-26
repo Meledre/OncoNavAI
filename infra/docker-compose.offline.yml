@@ -1,0 +1,10 @@
+services:
+  backend:
+    build:
+      args:
+        PIP_INSTALL_MODE: offline
+
+  frontend:
+    build:
+      args:
+        NPM_INSTALL_MODE: offline

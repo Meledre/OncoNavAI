@@ -1,0 +1,34 @@
+{
+  "source_repo": "git@github.com:Mel777Mel/OncoAI.git",
+  "source_commit": "e68b3cca7d30ab64a92cd9b12844bd5591f4ff36",
+  "exported_at_utc": "2026-02-26T06:42:22Z",
+  "whitelist": [
+    "backend",
+    "frontend",
+    "infra",
+    "scripts",
+    "onco",
+    "Makefile",
+    "LICENSE",
+    "COPYRIGHT",
+    "README.md",
+    "README.en.md",
+    ".env.example",
+    ".dockerignore",
+    ".gitignore"
+  ],
+  "blocklist": [
+    ".env",
+    ".env.*",
+    "data/",
+    "docs/cap/",
+    "docs/qa/",
+    "reports/",
+    ".github/",
+    ".idea/",
+    ".venv/",
+    ".worktrees/",
+    "infra/offline/*.tar",
+    "scripts/*.applescript"
+  ]
+}

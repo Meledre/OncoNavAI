@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.2",
+  "kb_version": "kb_golden_n5",
+  "report_id": "golden-n5-v1-2",
+  "summary": "Пациент с прогрессией после ramucirumab + paclitaxel. Требуется выбор post-progression опции по рекомендациям.",
+  "disease_context": {
+    "line_of_therapy": "post-progression",
+    "intent": "palliative"
+  },
+  "case_facts": {
+    "initial_stage": {
+      "tnm": "pT3N2M0",
+      "stage_group": "III"
+    },
+    "metastases": [
+      {
+        "site": "печень",
+        "status": "present"
+      }
+    ],
+    "biomarkers": {
+      "pd_l1_cps_values": [
+        8,
+        3
+      ],
+      "msi_status": "MSS"
+    },
+    "treatment_history": [
+      {
+        "name": "ramucirumab + paclitaxel",
+        "status": "progression"
+      }
+    ],
+    "key_unknowns": []
+  },
+  "timeline": [
+    "Лечение ramucirumab + paclitaxel",
+    "Подтверждена прогрессия"
+  ],
+  "consilium_md": "## Ключевые клинические факты\n- TNM: pT3N2M0\n- PD-L1 CPS: 8/3\n- MSI: MSS\n- Прогрессия после ramucirumab + paclitaxel\n\n## Возможные шаги\n1. Рассмотреть post-progression варианты согласно извлечённым рекомендациям.",
+  "plan": [
+    {
+      "title": "Выбор post-progression режима",
+      "rationale": "Основано на текущей линии терапии и статусе прогрессии.",
+      "citation_ids": [
+        "c1"
+      ]
+    }
+  ],
+  "issues": [],
+  "sanity_checks": [
+    {
+      "check_id": "case_facts_stage_present",
+      "status": "pass",
+      "details": "ok"
+    },
+    {
+      "check_id": "case_facts_metastases_present",
+      "status": "pass",
+      "details": "ok"
+    },
+    {
+      "check_id": "case_facts_treatment_history_present",
+      "status": "pass",
+      "details": "ok"
+    },
+    {
+      "check_id": "case_facts_biomarkers_present",
+      "status": "pass",
+      "details": "ok"
+    },
+    {
+      "check_id": "consilium_contains_stage",
+      "status": "pass",
+      "details": "ok"
+    }
+  ],
+  "citations": [
+    {
+      "citation_id": "c1",
+      "source_id": "russco",
+      "doc_id": "russco_2025_1_1_13",
+      "doc_version": "2025",
+      "chunk_id": "russco_2025_1_1_13_2025_chunk_01",
+      "pages": [
+        12
+      ],
+      "quote": "Post-progression option after ramucirumab + paclitaxel."
+    }
+  ],
+  "generated_at": "2026-02-21T00:00:00Z"
+}

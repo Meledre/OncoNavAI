@@ -1,0 +1,39 @@
+services:
+  backend:
+    image: ${ONCOAI_BACKEND_IMAGE:?Set ONCOAI_BACKEND_IMAGE to immutable image ref}
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    environment:
+      - ONCOAI_DATA_DIR=/app/data
+    ports:
+      - "8000:8000"
+    depends_on:
+      - qdrant
+    volumes:
+      - oncoai_data:/app/data
+
+  frontend:
+    image: ${ONCOAI_FRONTEND_IMAGE:?Set ONCOAI_FRONTEND_IMAGE to immutable image ref}
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - LOCAL_CORE_BASE_URL=http://backend:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  qdrant:
+    image: qdrant/qdrant:v1.13.0
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+volumes:
+  oncoai_data:
+  qdrant_data:
